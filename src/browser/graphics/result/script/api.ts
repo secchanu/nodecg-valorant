@@ -19,8 +19,7 @@ async function getMaps() {
 }
 
 export async function getMap(mapId: string) {
-  const mapName = mapId.substring(mapId.lastIndexOf('/') + 1);
   const maps = await getMaps();
-  const map = maps.find(m => m.assetPath.match(mapName));
+  const map = maps.find(m => m.mapUrl === mapId);
   return map;
 }

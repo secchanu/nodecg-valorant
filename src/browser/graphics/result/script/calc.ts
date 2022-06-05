@@ -7,7 +7,7 @@ export function sortPlayers(result: MatchDto) {
     return (a.stats.score > b.stats.score) ? -1 : 1;
   });
   const teams = result.teams;
-  result.teams.sort((a, b) => {
+  teams.sort((a, b) => {
     return (a.won > b.won) ? -1 : 1;
   });
   const sorted = teams.map(t => {

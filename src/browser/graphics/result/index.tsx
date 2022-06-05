@@ -1,7 +1,7 @@
 import { render } from "solid-js/web";
 
 import { Component, createEffect } from "solid-js";
-import { useContext } from "../../util/context";
+import { useContext } from "../../replicant/valorant";
 import type { NodeCGBrowser } from "../../../../../../types/browser";
 import type { MatchDto } from "../../../@types/valorant";
 
@@ -18,8 +18,11 @@ const App: Component = () => {
 
   createEffect(() => {
     valorantRep.on("change", (newValue) => {
-      console.log(newValue);
-      setValue(JSON.parse(JSON.stringify(newValue)));
+      try {
+        setValue(JSON.parse(JSON.stringify(newValue)));
+      } catch (e) {
+        setValue(undefined);
+      }
     });
   });
   
