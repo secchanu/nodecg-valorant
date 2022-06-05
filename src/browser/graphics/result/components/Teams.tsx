@@ -1,6 +1,6 @@
-import { Component, createEffect, createSignal } from "solid-js";
-import { useContext } from "../../../util/context";
-import type { AgentDto, MatchDto, PlayerDto } from "../../../../@types/valorant";
+import { Component, createEffect, createSignal, For, Show } from "solid-js";
+import { useContext } from "../../../replicant/valorant";
+import type { AgentDto, PlayerDto } from "../../../../@types/valorant";
 
 import Team from "./Team";
 
@@ -18,7 +18,7 @@ const Teams: Component = () => {
   const [getAgentsData, setAgentsData] = createSignal<AgentDto[]>();
 
   createEffect(() => {
-    const result = getResult() as (MatchDto | undefined);
+    const result = getResult();
     if (!result) return;
     const sorted = sortPlayers(result);
     setPlayers(sorted);
@@ -29,15 +29,19 @@ const Teams: Component = () => {
   });
 
   return (
-    <>
-      {getResult() && 
-        <div class={styles.flex}>
-          {getPlayers() && getAgentsData() && getPlayers()!.map((players) => {
-            return <Team players={players} agents={getAgentsData()!} />;
-          })}
-        </div>
-      }
-    </>
+    <Show when={getResult()}>
+      <div class={styles.flex}>
+        <Show when={getPlayers() && getAgentsData()}>
+          {(agentsData) => {
+            return (
+              <For each={getPlayers()}>
+                {(players) => <Team players={players} agents={agentsData} />}
+              </For>
+            )
+          }}
+        </Show>
+      </div>
+    </Show>
   );
 };
 

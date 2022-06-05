@@ -1,6 +1,6 @@
-import { Component, createEffect, createSignal } from "solid-js";
-import { useContext } from "../../../util/context";
-import type { MapDto, MatchDto, TeamDto } from "../../../../@types/valorant";
+import { Component, createEffect, createSignal, Show } from "solid-js";
+import { useContext } from "../../../replicant/valorant";
+import type { MapDto, TeamDto } from "../../../../@types/valorant";
 
 import MapCom from "./MapCom";
 import Point from "./Point";
@@ -18,7 +18,7 @@ const Header: Component = () => {
   const [getMapData, setMapData] = createSignal<MapDto>();
 
   createEffect(() => {
-    const result = getResult() as (MatchDto | undefined);
+    const result = getResult();
     if (!result) return;
     const teams = result.teams;
     teams.sort((a, b) => {
@@ -32,15 +32,19 @@ const Header: Component = () => {
   });
 
   return (
-    <>
-      {getResult() &&
-        <div class={styles.wrapper}>
-          {getTeams() && <Point team={getTeams()![0]} />}
-          {getMapData() && <MapCom map={getMapData()!} />}
-          {getTeams() && <Point team={getTeams()![1]} />}
-        </div>
-      }
-    </>
+    <Show when={getResult()}>
+      <div class={styles.wrapper}>
+        <Show when={getTeams()}>
+          {(teams) => <Point team={teams[0]} />}
+        </Show>
+        <Show when={getMapData()}>
+          {(map) => <MapCom map={map} />}
+        </Show>
+        <Show when={getTeams()}>
+          {(teams) => <Point team={teams[1]} />}
+        </Show>
+      </div>
+    </Show>
   );
 };
 

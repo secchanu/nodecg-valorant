@@ -1,4 +1,4 @@
-import { Component } from "solid-js";
+import { Component, For } from "solid-js";
 import type { AgentDto, PlayerDto } from "../../../../@types/valorant";
 
 import Player from "./Player";
@@ -18,9 +18,9 @@ const Team: Component<Props> = (props) => {
 
   return (
     <div class={styles.grid}>
-      {players.map((player, index) => {
-        return <Player player={player} agent={findAgent(player.characterId)!} top={!index} />;
-      })}
+      <For each={players}>
+        {(player, index) => <Player player={player} agent={findAgent(player.characterId)!} top={!index()} />}
+      </For>
     </div>
   );
 };
