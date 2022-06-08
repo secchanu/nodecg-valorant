@@ -8,6 +8,7 @@ import styles from "../css/Teams.module.css";
 
 import { sortPlayers } from "../script/calc";
 import { getAgents } from "../script/api";
+import Player from "./Player";
 
 
 const Teams: Component = () => {

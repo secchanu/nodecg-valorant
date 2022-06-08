@@ -20,9 +20,7 @@ const App: Component = () => {
     valorantRep.on("change", (newValue) => {
       try {
         setValue(JSON.parse(JSON.stringify(newValue)));
-      } catch (e) {
-        setValue(undefined);
-      }
+      } catch (e) {}
     });
   });
   
